@@ -35,8 +35,6 @@ public abstract class AnalyzerApp implements TextAnalyzer {
     }
 }
 
-package com.company;
-
 public class SpamAnalyzer extends KeywordAnalyzer implements TextAnalyzer {
 
     private Label label = Label.SPAM;
@@ -62,8 +60,6 @@ public class SpamAnalyzer extends KeywordAnalyzer implements TextAnalyzer {
         return Label.OK;
     }
 }
-
-package com.company;
 
 public class NegativeTextAnalyzer extends KeywordAnalyzer implements TextAnalyzer {
 
@@ -91,8 +87,6 @@ public class NegativeTextAnalyzer extends KeywordAnalyzer implements TextAnalyze
     }
 }
 
-package com.company;
-
 public class TooLongTextAnalyzer implements TextAnalyzer {
 
     private int commentMaxLength = 50;
@@ -103,14 +97,10 @@ public class TooLongTextAnalyzer implements TextAnalyzer {
     }
 }
 
-package com.company;
-
 public abstract class KeywordAnalyzer implements TextAnalyzer{
     protected abstract String[] getKeywords();
     protected abstract Label getLabel();
 }
-
-package com.company;
 
 public interface TextAnalyzer {
     enum Label {
