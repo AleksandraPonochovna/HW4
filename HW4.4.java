@@ -2,55 +2,32 @@ package com.company;
 
 public abstract class AnalyzerApp implements TextAnalyzer {
 
-    static final int commentMaxLength = 50;
-    static int sizeOfArray = 5;
-    static String[] spamKeywords = {"spam", "empty"};
-    static String[] negativeKeywords = {":(", "=(", ":|", ":/"};
-
     public static void main(String[] args) {
 
-        String[] texts = new String[sizeOfArray];
+        String[] texts = new String[5];
+        StringBuilder builder = new StringBuilder();
         texts[0] = "HI! It's some comment. With spam.";
         texts[1] = "HI! It's some comment. Bad comment";
         texts[2] = "HI! It's some comment. It's sad comment :(";
         texts[3] = "HI! It's some loooooooooooooooooooooooooooooooooooooooooooong comment.";
         texts[4] = "HI! It's some good comment.";
-        
-        TextAnalyzer[] textAnalyzer1 = {
-                new SpamAnalyzer(spamKeywords),
-                new NegativeTextAnalyzer(negativeKeywords),
-                new TooLongTextAnalyzer(commentMaxLength)
-        };
 
-        TextAnalyzer[] textAnalyzer2 = {
-                new SpamAnalyzer(spamKeywords),
-                new NegativeTextAnalyzer(negativeKeywords),
-                new TooLongTextAnalyzer(commentMaxLength)
+        TextAnalyzer[] textAnalyzer = {
+                new SpamAnalyzer(),
+                new NegativeTextAnalyzer(),
+                new TooLongTextAnalyzer()
         };
-
-        TextAnalyzer[] textAnalyzer3 = {
-                new SpamAnalyzer(spamKeywords),
-                new NegativeTextAnalyzer(negativeKeywords),
-                new TooLongTextAnalyzer(commentMaxLength)
-        };
-
-        TextAnalyzer[][] textAnalyzers = {textAnalyzer1, textAnalyzer2, textAnalyzer3};
 
         int numberOfTest = 1;
-        for (String test : texts) {
-            System.out.print("test #" + numberOfTest + ": ");
-            System.out.println(test);
-            for (TextAnalyzer[] textAnalyzer : textAnalyzers) {
-                System.out.println(checkLabels(textAnalyzer, test));
-            }
+        for (String text : texts) {
+            builder.append("Test №").append(numberOfTest).append(": ").append(text).append(checkLabels(textAnalyzer, text));
+            numberOfTest++;
         }
     }
-    
+
     public static Label checkLabels(TextAnalyzer[] analyzers, String text) {
         for (TextAnalyzer analyzer : analyzers) {
-            if (analyzer.processText(text).equals(Label.OK)) {
-                return Label.OK;
-            } else {
+            if (analyzer.processText(text) != Label.OK) {
                 return analyzer.processText(text);
             }
         }
@@ -58,14 +35,12 @@ public abstract class AnalyzerApp implements TextAnalyzer {
     }
 }
 
+package com.company;
+
 public class SpamAnalyzer extends KeywordAnalyzer implements TextAnalyzer {
 
     private Label label = Label.SPAM;
-    private String[] spamKeywords;
-
-    public SpamAnalyzer(String[] spamKeywords) {
-        this.spamKeywords = spamKeywords;
-    }
+    private String[] spamKeywords = {"spam", "empty"};
 
     @Override
     public String[] getKeywords() {
@@ -80,7 +55,7 @@ public class SpamAnalyzer extends KeywordAnalyzer implements TextAnalyzer {
     @Override
     public Label processText(String text) {
         for (String spamKeyword : spamKeywords) {
-            if (text.indexOf(spamKeyword) != -1) {
+            if (text.contains(spamKeyword)) {
                 return Label.SPAM;
             }
         }
@@ -88,15 +63,12 @@ public class SpamAnalyzer extends KeywordAnalyzer implements TextAnalyzer {
     }
 }
 
+package com.company;
+
 public class NegativeTextAnalyzer extends KeywordAnalyzer implements TextAnalyzer {
 
     private Label label = Label.NEGATIVE_TEXT;
-    private String[] negativeKeywords;
-
-
-    public NegativeTextAnalyzer(String[] negativeKeywords) {
-        this.negativeKeywords = negativeKeywords;
-    }
+    private String[] negativeKeywords =  {":(", "=(", ":|", ":/"};
 
     @Override
     public String[] getKeywords() {
@@ -111,25 +83,19 @@ public class NegativeTextAnalyzer extends KeywordAnalyzer implements TextAnalyze
     @Override
     public Label processText(String text) {
         for (String negativeKeyword : negativeKeywords) {
-            if (text.indexOf(negativeKeyword) != -1) {
+            if (text.contains(negativeKeyword)) {
                 return Label.NEGATIVE_TEXT;
             }
         }
-        return Label.NEGATIVE_TEXT;
+        return Label.OK;
     }
 }
 
+package com.company;
+
 public class TooLongTextAnalyzer implements TextAnalyzer {
 
-    private int commentMaxLength;
-
-    public TooLongTextAnalyzer(int commentMaxLength) {
-        this.commentMaxLength = commentMaxLength;
-    }
-
-    public int getMaxLength() {
-        return commentMaxLength;
-    }
+    private int commentMaxLength = 50;
 
     @Override
     public Label processText(String text) {
@@ -137,4 +103,19 @@ public class TooLongTextAnalyzer implements TextAnalyzer {
     }
 }
 
+package com.company;
 
+public abstract class KeywordAnalyzer implements TextAnalyzer{
+    protected abstract String[] getKeywords();
+    protected abstract Label getLabel();
+}
+
+package com.company;
+
+public interface TextAnalyzer {
+    enum Label {
+        SPAM, NEGATIVE_TEXT, TOO_LONG, OK
+    }
+
+    public Label processText(String text);
+}
