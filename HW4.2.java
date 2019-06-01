@@ -14,11 +14,9 @@ public class Factorial {
     }
 
     public static BigInteger factorial(int number) {
-        BigInteger factorial = new BigInteger("1");
-        BigInteger initialNumber = BigInteger.valueOf(number + 1);
-        BigInteger i;
-        for (i = BigInteger.ONE; !i.equals(initialNumber); i = i.add(BigInteger.ONE)) {
-            factorial = factorial.multiply(i);
+        BigInteger factorial = BigInteger.ONE;
+        for (int i = 2; i <= number; i++) {
+            factorial = factorial.multiply(BigInteger.valueOf(i));
         }
         return factorial;
     }
