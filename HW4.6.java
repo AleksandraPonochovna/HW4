@@ -8,6 +8,14 @@ public class Person {
     private int height;
     private int weight;
 
+    public Person(String name, String surname, int age, int height, int weight) {
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
+        this.height = height;
+        this.weight = weight;
+    }
+
     public static void main(String[] args) {
         Person somePerson = new Person.Builder()
                 .withName("Aleksandra")
@@ -22,7 +30,7 @@ public class Person {
         private Person newPerson;
 
         public Builder() {
-            newPerson = new Person();
+            newPerson = new Person("al", "pon", 55, 44, 33);
         }
 
         public Builder withName(String name) {
