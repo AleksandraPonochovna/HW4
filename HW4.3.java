@@ -1,6 +1,6 @@
 package com.company;
 
-public class Palindrom {
+public class PalindromApp {
 
     public static void main(String[] args) {
         String userString = "Madam, I'm Adam.";
@@ -12,9 +12,8 @@ public class Palindrom {
     }
 
     public static boolean isPalindrome(String text) {
-
         text = text.replaceAll("[^A-Za-z]", "");
-        String invertedString = new StringBuffer(text).reverse().toString();
+        String invertedString = new StringBuilder(text).reverse().toString();
         return text.equalsIgnoreCase(invertedString);
     }
 }
