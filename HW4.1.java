@@ -1,10 +1,12 @@
 package com.company;
 
-public class AsciiCharSequence implements java.lang.CharSequence {
+import java.lang.CharSequence;
+
+public class AsciiCharSequenceApp implements CharSequence {
 
     public static byte[] arrayByte = {110, 117, 110, 120, 88, 99, 65};
 
-    AsciiCharSequence(byte[] arrayByte) {
+    AsciiCharSequenceApp(byte[] arrayByte) {
         this.arrayByte = arrayByte;
     }
 
@@ -12,7 +14,7 @@ public class AsciiCharSequence implements java.lang.CharSequence {
         int index = 4;
         int start = 1;
         int end = 5;
-        AsciiCharSequence main = new AsciiCharSequence(arrayByte);
+        AsciiCharSequenceApp main = new AsciiCharSequenceApp(arrayByte);
         System.out.println("Length of array: " + main.length());
         System.out.println("Element under index " + index + ": " + main.charAt(index));
         System.out.println("Convert byte array to string: " + main.toString());
@@ -26,19 +28,16 @@ public class AsciiCharSequence implements java.lang.CharSequence {
     public CharSequence subSequence(int start, int end) {
         byte[] newArrayByte = new byte[end - start];
         int counter = 0;
-        if (start == end) {
-            return null;
-        } else {
-            for (int i = start; i < end; i++) {
+        if (end > start) {
+            for (int i = start; i < end; i++, counter++) {
                 newArrayByte[counter] = arrayByte[i];
-                counter++;
             }
         }
-        return new AsciiCharSequence(newArrayByte);
+        return new AsciiCharSequenceApp(newArrayByte);
     }
 
     public char charAt(int index) {
-       return (char) arrayByte[index];
+        return (char) arrayByte[index];
     }
 
     public String toString() {
